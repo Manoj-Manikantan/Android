@@ -23,7 +23,7 @@ class SelectCityActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        linearLayout = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        linearLayout = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvSelectCity.layoutManager = linearLayout
         fillCityList()
         adapter = SelectCityAdapter(cityList, this)

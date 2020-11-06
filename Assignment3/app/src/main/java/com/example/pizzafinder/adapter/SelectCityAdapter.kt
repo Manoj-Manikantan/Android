@@ -1,12 +1,14 @@
 package com.example.pizzafinder.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzafinder.R
+import com.example.pizzafinder.activity.MapsActivity
 import com.example.pizzafinder.databinding.RowCityBinding
 import com.example.pizzafinder.model.CityModel
 
@@ -40,6 +42,9 @@ class SelectCityAdapter(private val cityList: ArrayList<CityModel>, private val 
         }
 
         override fun onClick(v: View) {
+            val intent = Intent(itemView.context, MapsActivity::class.java)
+            itemView.context.startActivity(intent)
+
             Log.d("RecyclerView", "CLICK!")
         }
     }
