@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Assignment1Ex2</string>
+    <string name="full_name">Manoj Manikantan</string>
+    <string name="qualifications">B.E Computer Science</string>
+    <string name="profession">Student</string>
+    <string name="hobby">Gaming</string>
+    <string name="dream_job">Mobile Developer</string>
+</resources>
