@@ -1,20 +1,21 @@
 package com.example.pizzafinder.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.pizzafinder.R
 import com.example.pizzafinder.databinding.ActivityMapsBinding
-import com.example.pizzafinder.model.CityModel
 import com.example.pizzafinder.model.PizzaRestuarantModel
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -323,8 +324,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             mMap.addMarker(MarkerOptions().position(pizzaPointer).title(model.placeName))
         }
 
-        //move the camera to selected city
-        var zoomLevel:Float = 13.0f
+        /* move the camera to selected city */
+        val zoomLevel:Float = 12.0f
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedCity, zoomLevel))
     }
 
@@ -340,6 +341,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         fillMarkers(selectCityId)
+        mMap.setOnMarkerClickListener {
+            Log.e("MapsActivity", "onMapReady: " + it.title)
+            openPopup(it.title)
+            return@setOnMarkerClickListener false
+        }
+    }
+
+    private fun openPopup(title: String?) {
+        for (model: PizzaRestuarantModel in markerList) {
+            if (model.placeName == title){
+                createPopup(model)
+                break;
+            }
+        }
+
+    }
+
+    private fun createPopup(model: PizzaRestuarantModel) {
+        val alertDialog: AlertDialog = AlertDialog.Builder(this).create()
+        alertDialog.setTitle(model.placeName)
+        alertDialog.setMessage("Address: " + model.address + "\n\nWorking hours: " + model.workingHours)
+        alertDialog.setButton(
+            AlertDialog.BUTTON_NEUTRAL, "OK"
+        ) { dialog, _ -> dialog.dismiss() }
+        alertDialog.show()
     }
 
     fun btnNormalClick(view: View) {
