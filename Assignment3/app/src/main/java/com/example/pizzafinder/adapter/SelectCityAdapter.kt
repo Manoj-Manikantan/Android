@@ -27,14 +27,13 @@ class SelectCityAdapter(private val cityList: ArrayList<CityModel>, private val 
 
     override fun onBindViewHolder(holder: CityHolder, position: Int) {
         val itemCity = cityList[position]
-        holder.binding.tvCityName.text = itemCity.cityName
+        holder.bindData(itemCity)
     }
 
     class CityHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
 
-        private var view: View = v
         private var cityModel: CityModel? = null
-        lateinit var binding: RowCityBinding
+        var binding: RowCityBinding
 
         init {
             v.setOnClickListener(this)
@@ -43,9 +42,15 @@ class SelectCityAdapter(private val cityList: ArrayList<CityModel>, private val 
 
         override fun onClick(v: View) {
             val intent = Intent(itemView.context, MapsActivity::class.java)
+            intent.putExtra("cityId", cityModel?.cityId)
+            intent.putExtra("cityName", cityModel?.cityName)
             itemView.context.startActivity(intent)
-
             Log.d("RecyclerView", "CLICK!")
+        }
+
+        fun bindData(itemCity: CityModel) {
+            binding.tvCityName.text = itemCity.cityName
+            cityModel = itemCity
         }
     }
 
