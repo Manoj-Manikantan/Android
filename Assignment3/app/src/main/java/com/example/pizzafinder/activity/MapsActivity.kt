@@ -41,6 +41,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         title = cityName
     }
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        fillMarkers(selectCityId)
+        mMap.setOnMarkerClickListener {
+            Log.e("MapsActivity", "onMapReady: " + it.title)
+            openPopup(it.title)
+            return@setOnMarkerClickListener false
+        }
+    }
+
+
     private fun fillMarkers(cityId: Int) {
         markerList.clear()
         mMap.clear()
@@ -319,7 +339,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        for (model: PizzaRestuarantModel in markerList) {
+        for (model in markerList) {
             val pizzaPointer = LatLng(model.lat, model.lon)
             mMap.addMarker(MarkerOptions().position(pizzaPointer).title(model.placeName))
         }
@@ -329,27 +349,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedCity, zoomLevel))
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        fillMarkers(selectCityId)
-        mMap.setOnMarkerClickListener {
-            Log.e("MapsActivity", "onMapReady: " + it.title)
-            openPopup(it.title)
-            return@setOnMarkerClickListener false
-        }
-    }
-
+    /* Look for the match of the city name and then break */
     private fun openPopup(title: String?) {
-        for (model: PizzaRestuarantModel in markerList) {
+        for (model in markerList) {
             if (model.placeName == title){
                 createPopup(model)
                 break;
@@ -358,6 +360,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    /* Creates an alert dialog with restaurant details  */
     private fun createPopup(model: PizzaRestuarantModel) {
         val alertDialog: AlertDialog = AlertDialog.Builder(this).create()
         alertDialog.setTitle(model.placeName)

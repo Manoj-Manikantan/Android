@@ -3,6 +3,7 @@ package com.example.pizzafinder.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pizzafinder.R
 import com.example.pizzafinder.adapter.SelectCityAdapter
 import com.example.pizzafinder.databinding.ActivityMapsBinding
 import com.example.pizzafinder.databinding.ActivitySelectCityBinding
@@ -23,6 +24,7 @@ class SelectCityActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        title = resources.getString(R.string.select_city)
         linearLayout = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvSelectCity.layoutManager = linearLayout
         fillCityList()
