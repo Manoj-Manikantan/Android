@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EmployeeOrderTrackerActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tableViewOrder"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_pizzaApp_logo" />
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/tableViewOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+
+            <TextView
+                android:width="100dp"
+                android:text="Name" />
+
+            <TextView
+                android:width="100dp"
+                android:text="Order Id" />
+
+            <TextView
+                android:width="100dp"
+                android:text="Order Status" />
+
+            <TextView
+                android:width="100dp"
+                android:text="Status Update" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:width="100dp"
+                android:text="John Wick" />
+
+            <TextView
+                android:width="100dp"
+                android:text="A00001" />
+
+            <TextView
+                android:width="100dp"
+                android:text="In Progress" />
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Edit" />
+        </TableRow>
+    </TableLayout>
+
+</RelativeLayout>
