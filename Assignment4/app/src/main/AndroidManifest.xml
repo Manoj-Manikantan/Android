@@ -9,14 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginScreenActivity"></activity>
-        <activity android:name=".EmployeeOrderTrackerActivity" />
-        <activity android:name=".CustomerOrderSummaryActivity" />
-        <activity android:name=".CustomerInfoActivity" />
-        <activity android:name=".CustomerPizzaOrderActivity" />
-        <activity android:name=".CustomerScreenActivity" />
-        <activity android:name=".MainScreenActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".Activity.LoginScreenActivity"></activity>
+        <activity android:name=".Activity.EmployeeOrderTrackerActivity" />
+        <activity android:name=".Activity.CustomerOrderSummaryActivity" />
+        <activity android:name=".Activity.CustomerInfoActivity" />
+        <activity android:name=".Activity.CustomerPizzaOrderActivity" />
+        <activity android:name=".Activity.CustomerScreenActivity" />
+        <activity android:name=".Activity.MainScreenActivity" />
+        <activity android:name=".Activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
