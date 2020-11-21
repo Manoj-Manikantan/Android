@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EmployeeOrderTrackerActivity"></activity>
+        <activity android:name=".LoginScreenActivity"></activity>
+        <activity android:name=".EmployeeOrderTrackerActivity" />
         <activity android:name=".CustomerOrderSummaryActivity" />
         <activity android:name=".CustomerInfoActivity" />
         <activity android:name=".CustomerPizzaOrderActivity" />
