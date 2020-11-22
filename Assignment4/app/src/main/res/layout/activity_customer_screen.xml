@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.CustomerScreenActivity"
-    android:padding="10dp">
+    android:padding="10dp"
+    tools:context=".Activity.CustomerScreenActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,38 +23,54 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="Hello..."
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <Button
+            android:id="@+id/btnPlaceOrder"
             android:layout_width="250dp"
             android:layout_height="80dp"
+            android:onClick="onButtonPressed"
             android:text="Place your order" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnPersonalInfo"
             android:layout_width="250dp"
             android:layout_height="80dp"
+            android:onClick="onButtonPressed"
             android:text="Personal Information" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnOrderDetails"
             android:layout_width="250dp"
             android:layout_height="80dp"
+            android:onClick="onButtonPressed"
             android:text="Order Details" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:onClick="onButtonPressed"
+            android:text="Logout" />
     </LinearLayout>
+
 
 </LinearLayout>

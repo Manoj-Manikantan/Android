@@ -6,7 +6,8 @@ import androidx.core.content.edit
 
 class SPreference(context: Context) {
 
-    private val sharedPrefs: SharedPreferences = context.getSharedPreferences(Companion.PREFS_FILENAME, Context.MODE_PRIVATE)
+    private val sharedPrefs: SharedPreferences =
+        context.getSharedPreferences(Companion.PREFS_FILENAME, Context.MODE_PRIVATE)
 
     fun setStringValue(keyName: String, value: String) {
         sharedPrefs.edit { putString(keyName, value) }
@@ -30,6 +31,12 @@ class SPreference(context: Context) {
 
     fun getIntValue(keyName: String): Int {
         return sharedPrefs.getInt(keyName, 0)
+    }
+
+    fun clearPreference() {
+        val editor = sharedPrefs.edit()
+        editor.clear()
+        editor.apply()
     }
 
     companion object {

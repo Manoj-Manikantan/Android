@@ -45,6 +45,7 @@
             android:layout_width="100dp"
             android:layout_height="80dp"
             android:layout_weight="1"
+            android:onClick="onButtonClick"
             android:text="Customer"
             android:textSize="18sp" />
 
@@ -53,6 +54,7 @@
             android:layout_width="100dp"
             android:layout_height="80dp"
             android:layout_weight="1"
+            android:onClick="onButtonClick"
             android:text="Employee"
             android:textSize="18sp" />
     </LinearLayout>

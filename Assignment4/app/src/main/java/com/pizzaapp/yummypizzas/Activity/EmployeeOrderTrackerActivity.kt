@@ -9,4 +9,8 @@ class EmployeeOrderTrackerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_employee_order_tracker)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }

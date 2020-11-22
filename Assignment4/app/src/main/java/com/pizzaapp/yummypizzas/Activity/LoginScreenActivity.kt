@@ -8,7 +8,7 @@ import com.pizzaapp.yummypizzas.R
 import com.pizzaapp.yummypizzas.Utility.Constants
 import com.pizzaapp.yummypizzas.Utility.SPreference
 import kotlinx.android.synthetic.main.activity_login_screen.*
-import kotlinx.android.synthetic.main.activity_login_screen.view.*
+import java.util.*
 
 class LoginScreenActivity : AppCompatActivity() {
 
@@ -57,28 +57,34 @@ class LoginScreenActivity : AppCompatActivity() {
 
     private fun checkLogin(userName: String, password: String) {
         when {
-            sPreference.getStringValue(SPreference.defaultUserName) != userName -> {
+            sPreference.getStringValue(SPreference.defaultUserName)
+                .toLowerCase(Locale.ROOT) != userName -> {
                 etUsername.error = "Incorrect username"
             }
-            sPreference.getStringValue(SPreference.defaultPassword) != password -> {
-                etUsername.error = "Incorrect password"
+            sPreference.getStringValue(SPreference.defaultPassword)
+                .toLowerCase(Locale.ROOT) != password -> {
+                etPassword.error = "Incorrect password"
             }
             else -> {
-                openHomeScreen()
+                openHomeScreen(userName,password)
             }
         }
     }
 
-    private fun openHomeScreen() {
+    private fun openHomeScreen(userName: String, password: String) {
         sPreference.setBooleanValue(SPreference.isLogin, true)
         sPreference.setIntValue(SPreference.userType, userType)
-        val intent = Intent(this, MainScreenActivity::class.java)
-        when (userType) {
+        sPreference.setStringValue(SPreference.userName, userName)
+        sPreference.setStringValue(SPreference.password, password)
+        val intent: Intent = when (userType) {
             Constants.customer -> {
                 Intent(this, CustomerScreenActivity::class.java)
             }
             Constants.employee -> {
                 Intent(this, EmployeeOrderTrackerActivity::class.java)
+            }
+            else -> {
+                Intent(this, MainScreenActivity::class.java)
             }
         }
         startActivity(intent)

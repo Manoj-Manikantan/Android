@@ -25,6 +25,5 @@ class MainScreenActivity : AppCompatActivity() {
         val intent = Intent(this, LoginScreenActivity::class.java)
         intent.putExtra("userType", userType)
         startActivity(intent)
-        finish()
     }
 }
