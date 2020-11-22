@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="90dp"
-        tools:srcCompat="@drawable/ic_pizzaApp_logo" />
+        tools:srcCompat="@drawable/ic_pizza_app_logo" />
 
 
     <LinearLayout
@@ -33,7 +33,7 @@
             android:textSize="30dp" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress"
+            android:id="@+id/etUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -42,7 +42,7 @@
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:id="@+id/editTextTextPassword"
+            android:id="@+id/etPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -53,6 +53,7 @@
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="150dp"
+            android:onClick="onBtnLoginClick"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_weight="1"

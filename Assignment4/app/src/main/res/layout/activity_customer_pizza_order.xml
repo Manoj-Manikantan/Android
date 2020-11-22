@@ -27,7 +27,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/ic_pizzaApp_logo" />
+                    android:src="@drawable/ic_pizza_app_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"

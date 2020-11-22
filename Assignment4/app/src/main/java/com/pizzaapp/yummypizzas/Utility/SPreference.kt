@@ -24,10 +24,22 @@ class SPreference(context: Context) {
         return sharedPrefs.getBoolean(keyName, false)
     }
 
+    fun setIntValue(keyName: String, value: Int) {
+        sharedPrefs.edit { putInt(keyName, value) }
+    }
+
+    fun getIntValue(keyName: String): Int {
+        return sharedPrefs.getInt(keyName, 0)
+    }
+
     companion object {
         const val PREFS_FILENAME = "shared_prefs_pizza_app"
         const val isLogin = "isLogin"
+        const val defaultUserName = "defaultUserName"
+        const val defaultPassword = "defaultPassword"
         const val userName = "userName"
+        const val password = "password"
+        const val userType = "userType"
     }
 
 }
