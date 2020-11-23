@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="10dp"
-    tools:context=".Activity.activity_list_item">
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -67,30 +66,29 @@
 
 
     <LinearLayout
-        android:gravity="center"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_marginBottom="10dp"
             android:id="@+id/tvStateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="In Progress" />
 
         <Button
             android:id="@+id/btnState"
-            android:textColor="#FFF"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:textAllCaps="false"
-            android:background="@color/colorInProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mark Delivered" />
+            android:background="@color/colorInProgress"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Mark Delivered"
+            android:textAllCaps="false"
+            android:textColor="#FFF" />
     </LinearLayout>
-
 
 
 </LinearLayout>

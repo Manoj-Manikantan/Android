@@ -41,7 +41,9 @@ class EmployeeOrderTrackerActivity : AppCompatActivity(), OrderListAdapter.Order
 
     fun onButtonPressed(view: View) {
         if (view.id == R.id.btnLogout) {
-            sPreference.clearPreference()
+            sPreference.setBooleanValue(SPreference.isLogin,false)
+            sPreference.setStringValue(SPreference.userName,"")
+            sPreference.setStringValue(SPreference.password,"")
             Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, MainScreenActivity::class.java))
             finish()
