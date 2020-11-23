@@ -30,7 +30,12 @@ class CustomerScreenActivity : AppCompatActivity() {
             startActivity(Intent(this, MainScreenActivity::class.java))
             finish()
         } else if (view.id == R.id.btnPlaceOrder) {
-            startActivity(Intent(this, CustomerPizzaOrderActivity::class.java))
+            if (sPreference.getBooleanValue(SPreference.isPersonalInfoFilled)) {
+                startActivity(Intent(this, CustomerPizzaOrderActivity::class.java))
+            } else {
+                Toast.makeText(this, "Please fill all the fields in Personal information to place an order", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, CustomerInfoActivity::class.java))
+            }
         } else if (view.id == R.id.btnPersonalInfo) {
             startActivity(Intent(this, CustomerInfoActivity::class.java))
         } else if (view.id == R.id.btnOrderDetails) {

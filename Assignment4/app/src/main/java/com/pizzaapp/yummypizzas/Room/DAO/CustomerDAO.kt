@@ -11,8 +11,12 @@ interface CustomerDAO {
     @Query("SELECT * FROM customer_table")
     fun getAllCustomers(): List<Customer>
 
+    @Query(
+        "SELECT * FROM customer_table where userName == :username")
+    fun getCustomerByUsername(username: String): Customer
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertCustomer(customer: Customer)
+    fun insertCustomer(customer: Customer)
 
     @Query("DELETE FROM customer_table")
     suspend fun deleteAllCustomers()

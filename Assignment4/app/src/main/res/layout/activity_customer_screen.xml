@@ -44,18 +44,18 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btnPlaceOrder"
-            android:layout_width="250dp"
-            android:layout_height="80dp"
-            android:onClick="onButtonPressed"
-            android:text="Place your order" />
-
-        <Button
             android:id="@+id/btnPersonalInfo"
             android:layout_width="250dp"
             android:layout_height="80dp"
             android:onClick="onButtonPressed"
             android:text="Personal Information" />
+
+        <Button
+            android:id="@+id/btnPlaceOrder"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:onClick="onButtonPressed"
+            android:text="Place your order" />
 
         <Button
             android:id="@+id/btnOrderDetails"

@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.RadioGroup
 import android.widget.Toast
 import com.pizzaapp.yummypizzas.R
 import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
@@ -17,7 +20,9 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
 
     var pizzaName: String = ""
     var pizzaSize: String = ""
-    var extraToppings = arrayOf<String>()
+    var pizzaQuantity: Int = 1
+    var totalPrize: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,42 +52,75 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
                 // pizzaName value remains empty
             }
         }
+
+        radioBtnGroup.setOnCheckedChangeListener { group, checkedId ->
+            run {
+                when (checkedId) {
+                    R.id.rdButtonLarge -> pizzaSize = "Large"
+                    R.id.rdButtonMedium -> pizzaSize = "Medium"
+                    R.id.rdButtonSmall -> pizzaSize = "Small"
+                }
+                calculatePrice()
+            }
+        }
+
+
+        etQuantity.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s!!.isNotEmpty()) {
+                    pizzaQuantity = etQuantity.text.toString().toInt()
+                    calculatePrice()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
+
+    }
+
+    private fun calculatePrice() {
+        if (pizzaSize.isNotEmpty()) {
+            var priceForOne = 0
+            when (pizzaSize) {
+                "Large" -> priceForOne = 20
+                "Medium" -> priceForOne = 15
+                "Small" -> priceForOne = 10
+            }
+            totalPrize = priceForOne * pizzaQuantity
+            tvTotalAmount.text = "$ $totalPrize"
+        }
+
     }
 
     //On Click of Place Order button
     fun btnPizzaOrder(v: View) {
-        if (v.id == R.id.btnConfirmOrder) getPizzaSize()
+        if (v.id == R.id.btnConfirmOrder) getQuantity()
     }
 
     //Handling radio buttons for pizza size
     private fun getPizzaSize() {
-        when (radioBtnGroup.checkedRadioButtonId) {
-            R.id.rdButtonLarge -> pizzaSize = "Large"
-            R.id.rdButtonMedium -> pizzaSize = "Medium"
-            R.id.rdButtonSmall -> pizzaSize = "Small"
-            else -> Toast.makeText(
-                applicationContext,
-                "Please select size of your pizza",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        if (pizzaSize.isNotEmpty()) getToppings()
+        if (pizzaSize.isNotEmpty()) getQuantity()
     }
 
     //Handling checkbox for toppings
-    private fun getToppings() {
-        if (chBoxCheese.isChecked) extraToppings += "Cheese"
-        if (chBoxGP.isChecked) extraToppings += "Green Pepper"
-        if (chBoxSH.isChecked) extraToppings += "Smoked Ham"
-        if (chBoxBO.isChecked) extraToppings += "Black Olives"
-        if (chBoxSpinach.isChecked) extraToppings += "Spinach"
-        if (chBoxSO.isChecked) extraToppings += "Spanish Onions"
-        openCustomerInfoActivity()
+    private fun getQuantity() {
+        if (etQuantity.text.toString().isEmpty()) {
+            etQuantity.error = "Enter quantity"
+        } else {
+            pizzaQuantity = etQuantity.text.toString().toInt()
+            openCustomerInfoActivity()
+        }
+
     }
 
     //Open Checkout activity
     private fun openCustomerInfoActivity() {
-        val pizza = Pizza(pizzaName, pizzaSize , extraToppings.toString())
+      /*  val pizza = Pizza(pizzaName, pizzaSize, pizzaQuantity)
         val t1 = addPizzaThread(pizza, this)
         t1.start()
         val i = Intent(applicationContext, CustomerScreenActivity::class.java)
@@ -94,7 +132,7 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
         i.putExtra("pizzaName", pizzaName)
         i.putExtra("pizzaSize", pizzaSize)
         i.putExtra("extraToppings", extraToppings)
-        startActivity(i)
+        startActivity(i)*/
     }
 }
 

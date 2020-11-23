@@ -44,6 +44,7 @@ class SPreference(context: Context) {
         const val isLogin = "isLogin"
         const val defaultUserName = "defaultUserName"
         const val defaultPassword = "defaultPassword"
+        const val isPersonalInfoFilled = "isPersonalInfoFilled"
         const val userName = "userName"
         const val password = "password"
         const val userType = "userType"

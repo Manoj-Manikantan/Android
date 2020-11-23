@@ -35,7 +35,7 @@ public abstract class PizzaDatabase : RoomDatabase() {
                     context.applicationContext,
                     PizzaDatabase::class.java,
                     "pizzaApp.db"
-                ).build()
+                ).allowMainThreadQueries().build()
                 INSTANCE = instance
                 // return instance
                 instance

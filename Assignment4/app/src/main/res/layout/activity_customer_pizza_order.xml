@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".Activity.CustomerPizzaOrderActivity"
-    android:padding="10dp">
+    android:padding="10dp"
+    tools:context=".Activity.CustomerPizzaOrderActivity">
 
     <ScrollView
-        android:layout_above="@+id/btnConfirmOrder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnConfirmOrder">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,16 +29,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/ic_pizza_app_logo" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:gravity="center_horizontal"
-                    android:text="Better ingredients\nBetter Pizza"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -114,65 +104,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="10dp"
-                    android:text="Extra toppings"
+                    android:text="Enter quantity"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <CheckBox
-                    android:id="@+id/chBoxCheese"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Cheese"
-                    android:textSize="15dp" />
+                <EditText
+                    android:id="@+id/etQuantity"
+                    android:text="1"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-                <CheckBox
-                    android:id="@+id/chBoxGP"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Green Pepper"
-                    android:textSize="15dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/chBoxSH"
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:padding="10dp"
-                    android:text="Smoked Ham"
-                    android:textSize="15dp" />
+                    android:text="Your total price : "
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
-                <CheckBox
-                    android:id="@+id/chBoxSpinach"
+                <TextView
+                    android:id="@+id/tvTotalAmount"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:padding="10dp"
-                    android:text="Spinach"
-                    android:textSize="15dp" />
+                    android:text=""
+                    android:textSize="16dp" />
 
-                <CheckBox
-                    android:id="@+id/chBoxBO"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Black Olives"
-                    android:textSize="15dp" />
-
-                <CheckBox
-                    android:id="@+id/chBoxSO"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Spanish Onions"
-                    android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
+
     </ScrollView>
 
     <Button
