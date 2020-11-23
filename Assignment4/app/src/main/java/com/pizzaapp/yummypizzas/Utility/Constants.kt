@@ -10,6 +10,6 @@ class Constants {
         const val customerPassword = "456"
 
         const val inProgress = "In Progress"
-        const val completed = "Completed"
+        const val completed = "Delivered"
     }
 }

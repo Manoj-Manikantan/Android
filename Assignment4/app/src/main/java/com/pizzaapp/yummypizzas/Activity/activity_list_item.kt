@@ -7,6 +7,6 @@ import com.pizzaapp.yummypizzas.R
 class activity_list_item : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_item)
+        setContentView(R.layout.row_order_item)
     }
 }
