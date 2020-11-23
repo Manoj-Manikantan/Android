@@ -7,8 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "pizza_table")
 class Pizza(
     @ColumnInfo(name = "pizzaType") var pizzaType: String,
-    @ColumnInfo(name = "pizzaSize") var pizzaSize: String,
-    @ColumnInfo(name = "pizzaToppings") var pizzaToppings: String
+    @ColumnInfo(name = "pizzaSize") var pizzaSize: String
 ) {
     @PrimaryKey(autoGenerate = true)
     var productId: Int = 0

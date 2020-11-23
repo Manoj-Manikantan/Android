@@ -11,16 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.pizzaapp.yummypizzas.R
 
 
-data class Order(val custName: String, val orderId: Int, val orderStatus: String, val button: String)
-
 class FragmentActivity : Fragment() {
-
-    private val orderDetails = listOf(
-        Order("Manoj", 1, "In progess", "Button"),
-        Order("Masum", 2, "Completed", "Button"),
-        Order("John", 3, "Cancelled", "Button"),
-        Order("Wick", 4, "In progess", "Button")
-    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,7 +1,9 @@
 package com.pizzaapp.yummypizzas.Activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -11,10 +13,15 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.pizzaapp.yummypizzas.R
 import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
+import com.pizzaapp.yummypizzas.Room.Entity.Order
 import com.pizzaapp.yummypizzas.Room.Entity.Pizza
+import com.pizzaapp.yummypizzas.Utility.Constants
+import com.pizzaapp.yummypizzas.Utility.SPreference
 import kotlinx.android.synthetic.main.activity_customer_pizza_order.*
+import java.time.LocalDateTime
 
 class CustomerPizzaOrderActivity : AppCompatActivity() {
 
@@ -23,6 +30,7 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
     var pizzaQuantity: Int = 1
     var totalPrize: Int = 0
 
+    private lateinit var sPreference: SPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +39,7 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-
+        sPreference = SPreference(this)
         val pizzaList = resources.getStringArray(R.array.myPizzaList)
         val adapter = ArrayAdapter(applicationContext, R.layout.item_spinner, pizzaList)
 
@@ -74,9 +82,11 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //beforeTextChanged
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //onTextChanged
             }
         })
 
@@ -98,16 +108,19 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
     }
 
     //On Click of Place Order button
+    @SuppressLint("NewApi")
     fun btnPizzaOrder(v: View) {
         if (v.id == R.id.btnConfirmOrder) getQuantity()
     }
 
     //Handling radio buttons for pizza size
+    @SuppressLint("NewApi")
     private fun getPizzaSize() {
         if (pizzaSize.isNotEmpty()) getQuantity()
     }
 
     //Handling checkbox for toppings
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getQuantity() {
         if (etQuantity.text.toString().isEmpty()) {
             etQuantity.error = "Enter quantity"
@@ -119,9 +132,18 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
     }
 
     //Open Checkout activity
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openCustomerInfoActivity() {
-      /*  val pizza = Pizza(pizzaName, pizzaSize, pizzaQuantity)
-        val t1 = addPizzaThread(pizza, this)
+        val newOrder = Order(
+            sPreference.getStringValue(SPreference.userName),
+            pizzaName,
+            pizzaSize,
+            pizzaQuantity,
+            totalPrize,
+            LocalDateTime.now().toString(),
+            Constants.inProgress
+        )
+        val t1 = addPizzaThread(newOrder, this)
         t1.start()
         val i = Intent(applicationContext, CustomerScreenActivity::class.java)
         Toast.makeText(
@@ -129,25 +151,22 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
             "Order placed successfully",
             Toast.LENGTH_SHORT
         ).show()
-        i.putExtra("pizzaName", pizzaName)
-        i.putExtra("pizzaSize", pizzaSize)
-        i.putExtra("extraToppings", extraToppings)
-        startActivity(i)*/
+        startActivity(i)
     }
 }
 
 
 class addPizzaThread() : Thread() {
-    private lateinit var pizza: Pizza
+    private lateinit var order: Order
     private lateinit var context: Context
 
-    constructor(pizza: Pizza, context: Context) : this() {
-        this.pizza = pizza
+    constructor(order: Order, context: Context) : this() {
+        this.order = order
         this.context = context
     }
 
     override fun run() {
         val roomDatabase = PizzaDatabase.getDatabase(context)
-        roomDatabase.pizzaDAO().insertProduct(pizza)
+        roomDatabase.orderDAO().insertOrder(order)
     }
 }

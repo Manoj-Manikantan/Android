@@ -8,5 +8,8 @@ class Constants {
         const val employeePassword = "123"
         const val customerUsername = "Masum"
         const val customerPassword = "456"
+
+        const val inProgress = "In Progress"
+        const val completed = "Completed"
     }
 }

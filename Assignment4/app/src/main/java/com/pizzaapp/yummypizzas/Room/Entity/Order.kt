@@ -6,11 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "order_table")
 class Order(
-    @ColumnInfo(name = "customerId") var customerId: Int,
-    @ColumnInfo(name = "productId") var productId: Int,
-    @ColumnInfo(name = "employeeId") var employeeId: Int,
+    @ColumnInfo(name = "customerName") var customerName: String,
+    @ColumnInfo(name = "pizzaName") var pizzaName: String,
+    @ColumnInfo(name = "pizzaSize") var pizzaSize: String,
+    @ColumnInfo(name = "quantity") var quantity: Int,
+    @ColumnInfo(name = "price") var price: Int,
     @ColumnInfo(name = "orderDate") var orderDate: String,
-    @ColumnInfo(name = "quantity") var orderQuantity: Int,
     @ColumnInfo(name = "status") var orderStatus: String
 ) {
     @PrimaryKey(autoGenerate = true)

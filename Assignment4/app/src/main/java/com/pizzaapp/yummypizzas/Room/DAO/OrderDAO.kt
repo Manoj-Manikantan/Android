@@ -12,6 +12,9 @@ interface OrderDAO {
     @Query("SELECT * FROM order_table")
     fun getAllOrders(): List<Order>
 
+    @Query("SELECT * FROM order_table order by orderId desc limit 1")
+    fun getLastOrder(): Order
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertOrder(order: Order)
 
