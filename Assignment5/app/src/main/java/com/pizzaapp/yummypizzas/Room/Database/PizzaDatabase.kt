@@ -4,21 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.pizzaapp.yummypizzas.Room.DAO.CustomerDAO
-import com.pizzaapp.yummypizzas.Room.DAO.EmployeeDAO
 import com.pizzaapp.yummypizzas.Room.DAO.OrderDAO
-import com.pizzaapp.yummypizzas.Room.DAO.PizzaDAO
-import com.pizzaapp.yummypizzas.Room.Entity.Customer
-import com.pizzaapp.yummypizzas.Room.Entity.Employee
 import com.pizzaapp.yummypizzas.Room.Entity.Order
-import com.pizzaapp.yummypizzas.Room.Entity.Pizza
 
-@Database(entities = [Employee::class, Customer::class, Order::class, Pizza::class], version = 1, exportSchema = false)
+@Database(entities = [Order::class], version = 1, exportSchema = false)
 public abstract class PizzaDatabase : RoomDatabase() {
 
-    abstract fun employeeDAO(): EmployeeDAO
-    abstract fun customerDAO(): CustomerDAO
-    abstract fun pizzaDAO(): PizzaDAO
     abstract fun orderDAO(): OrderDAO
 
     companion object {

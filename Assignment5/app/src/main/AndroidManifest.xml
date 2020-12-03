@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.activity_list_item"/>
         <activity android:name=".Activity.LoginScreenActivity" />
+        <activity android:name=".Activity.SignupScreenActivity" />
         <activity android:name=".Activity.EmployeeOrderTrackerActivity" />
         <activity android:name=".Activity.CustomerOrderSummaryActivity" />
         <activity android:name=".Activity.CustomerInfoActivity" />

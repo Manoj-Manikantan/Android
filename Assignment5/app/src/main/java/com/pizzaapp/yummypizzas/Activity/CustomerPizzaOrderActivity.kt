@@ -11,13 +11,11 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.pizzaapp.yummypizzas.R
 import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
 import com.pizzaapp.yummypizzas.Room.Entity.Order
-import com.pizzaapp.yummypizzas.Room.Entity.Pizza
 import com.pizzaapp.yummypizzas.Utility.Constants
 import com.pizzaapp.yummypizzas.Utility.SPreference
 import kotlinx.android.synthetic.main.activity_customer_pizza_order.*

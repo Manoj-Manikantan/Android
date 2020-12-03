@@ -11,9 +11,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="90dp"
+        android:layout_marginBottom="50dp"
         android:src="@drawable/ic_pizza_app_logo" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,47 +27,59 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="90dp"
+            android:layout_marginBottom="50dp"
             android:layout_weight="1"
-            android:text="Login"
+            android:text="Register"
             android:textSize="30dp" />
 
         <EditText
-            android:id="@+id/etEmailLogin"
+            android:id="@+id/etFullnameSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Enter Full Name"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/etEmailSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:ems="10"
             android:hint="Enter Email"
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:id="@+id/etPasswordLogin"
+            android:id="@+id/etPasswordSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:ems="10"
             android:hint="Enter Password"
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnSignup"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:onClick="onBtnClick"
-            android:text="Login"
+            android:text="Signup"
             android:textAllCaps="false" />
 
         <TextView
-            android:id="@+id/tvSignup"
+            android:id="@+id/tvLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:onClick="onBtnClick"
             android:padding="20dp"
-            android:text="Don't have account? Register"
+            android:text="Already have account? Login"
             android:textSize="20dp" />
 
     </LinearLayout>

@@ -1,6 +1,6 @@
 package com.pizzaapp.yummypizzas.Activity
 
-import android.content.Context
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -8,20 +8,21 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.pizzaapp.yummypizzas.R
-import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
-import com.pizzaapp.yummypizzas.Room.Entity.Customer
 import com.pizzaapp.yummypizzas.Utility.SPreference
 import kotlinx.android.synthetic.main.activity_customer_info.*
-import java.lang.Exception
 import java.util.*
-
 
 class CustomerInfoActivity : AppCompatActivity() {
 
     var cardType = "";
     private lateinit var sPreference: SPreference
-
+    private var mDatabaseReference: DatabaseReference? = null
+    private var mDatabase: FirebaseDatabase? = null
+    private var mProgressBar: ProgressDialog? = null
+    private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,33 +32,40 @@ class CustomerInfoActivity : AppCompatActivity() {
 
     private fun intUI() {
         sPreference = SPreference(this)
+        mProgressBar = ProgressDialog(this)
+        mDatabase = FirebaseDatabase.getInstance()
+        mAuth = FirebaseAuth.getInstance()
+        mDatabaseReference = mDatabase!!.reference.child("Users")
         if (sPreference.getBooleanValue(SPreference.isPersonalInfoFilled)) {
-            val roomDatabase = PizzaDatabase.getDatabase(this)
-            val currentCustomer = roomDatabase.customerDAO()
-                .getCustomerByUsername(sPreference.getStringValue(SPreference.userName))
-            bindData(currentCustomer)
+            bindData()
         }
     }
 
-    private fun bindData(currentCustomer: Customer) {
-        try {
-            etName.setText(currentCustomer.fullName)
-            etAddress.setText(currentCustomer.address)
-            etPostalCode.setText(currentCustomer.postalCode)
-            etPhoneNum.setText(currentCustomer.phoneNum)
-            etCardName.setText(currentCustomer.cardName)
-            etCardNum.setText(currentCustomer.cardNumber)
-            etExpiryMonth.setText("" + currentCustomer.expiryMonth)
-            etExpYear.setText("" + currentCustomer.expiryYear)
-            if (currentCustomer.cardType == "Debit") {
-                rbtnDebit.isChecked = true
-            } else {
-                rbtnCredit.isChecked = true
+    private fun bindData() {
+        val mUser = mAuth!!.currentUser
+        val mUserReference = mDatabaseReference!!.child(mUser!!.uid)
+        mUserReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    etName.setText(snapshot.child("fullName").value.toString())
+                    etAddress.setText(snapshot.child("address").value.toString())
+                    etPostalCode.setText(snapshot.child("postalCode").value.toString())
+                    etPhoneNum.setText(snapshot.child("phoneNum").value.toString())
+                    etCardName.setText(snapshot.child("cardName").value.toString())
+                    etCardNum.setText(snapshot.child("cardNum").value.toString())
+                    etExpiryMonth.setText(snapshot.child("expiryMonth").value.toString())
+                    etExpYear.setText(snapshot.child("expiryYear").value.toString())
+                    if (snapshot.child("cardType").value.toString() == "Debit") {
+                        rbtnDebit.isChecked = true
+                    } else {
+                        rbtnCredit.isChecked = true
+                    }
+                } catch (e: Exception) {
+                    Log.e("CustomerInfoActivity", "bindData: " + e.localizedMessage)
+                }
             }
-        } catch (e: Exception) {
-            Log.e("CustomerInfoActivity", "bindData: " + e.localizedMessage )
-        }
-
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     fun btnPayConfirmOrder(v: View) {
@@ -104,23 +112,21 @@ class CustomerInfoActivity : AppCompatActivity() {
     }
 
     private fun openCheckoutActivity() {
+        mProgressBar!!.setMessage("Saving...")
+        mProgressBar!!.show()
         sPreference.setBooleanValue(SPreference.isPersonalInfoFilled, true)
-
-        val newCustomer = Customer(
-            sPreference.getStringValue(SPreference.userName),
-            sPreference.getStringValue(SPreference.password),
-            etName.text.toString(),
-            etAddress.text.toString(),
-            etPhoneNum.text.toString(),
-            etPostalCode.text.toString(),
-            etCardName.text.toString(),
-            cardType,
-            etCardNum.text.toString(),
-            etExpiryMonth.text.toString().toInt(),
-            etExpYear.text.toString().toInt()
-        )
-        val newThread = saveCustomerDetails(newCustomer, this)
-        newThread.start()
+        val userId = mAuth!!.currentUser!!.uid
+        val currentUserDb = mDatabaseReference!!.child(userId)
+        currentUserDb.child("fullName").setValue(etName.text.toString())
+        currentUserDb.child("address").setValue(etAddress.text.toString())
+        currentUserDb.child("phoneNum").setValue(etPhoneNum.text.toString())
+        currentUserDb.child("postalCode").setValue(etPostalCode.text.toString())
+        currentUserDb.child("cardName").setValue(etCardName.text.toString())
+        currentUserDb.child("cardType").setValue(cardType)
+        currentUserDb.child("cardNum").setValue(etCardNum.text.toString())
+        currentUserDb.child("expiryMonth").setValue(etExpiryMonth.text.toString())
+        currentUserDb.child("expiryYear").setValue(etExpYear.text.toString())
+        mProgressBar!!.hide()
         val i = Intent(applicationContext, CustomerScreenActivity::class.java)
         Toast.makeText(
             applicationContext,
@@ -128,21 +134,5 @@ class CustomerInfoActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
         startActivity(i)
-    }
-
-}
-
-class saveCustomerDetails() : Thread() {
-    private lateinit var customer: Customer
-    private lateinit var context: Context
-
-    constructor(customer: Customer, context: Context) : this() {
-        this.customer = customer
-        this.context = context
-    }
-
-    override fun run() {
-        val roomDatabase = PizzaDatabase.getDatabase(context)
-        roomDatabase.customerDAO().insertCustomer(customer)
     }
 }

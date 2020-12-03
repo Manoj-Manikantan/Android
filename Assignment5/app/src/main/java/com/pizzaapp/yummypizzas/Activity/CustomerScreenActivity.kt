@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.pizzaapp.yummypizzas.Adapter.OrderListAdapter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.pizzaapp.yummypizzas.R
 import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
 import com.pizzaapp.yummypizzas.Room.Entity.Order
@@ -15,6 +16,11 @@ import kotlinx.android.synthetic.main.activity_customer_screen.*
 
 class CustomerScreenActivity : AppCompatActivity() {
     private lateinit var sPreference: SPreference
+
+    private var mDatabaseReference: DatabaseReference? = null
+    private var mDatabase: FirebaseDatabase? = null
+    private var mAuth: FirebaseAuth? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_screen)
@@ -23,14 +29,25 @@ class CustomerScreenActivity : AppCompatActivity() {
 
     private fun initUI() {
         sPreference = SPreference(this)
-        tvUserName.text = "Hello " + sPreference.getStringValue(SPreference.userName)
+        mDatabase = FirebaseDatabase.getInstance()
+        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+        mAuth = FirebaseAuth.getInstance()
+        val mUser = mAuth!!.currentUser
+        val mUserReference = mDatabaseReference!!.child(mUser!!.uid)
+        mUserReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                tvUserName.text = "Hello " + snapshot.child("fullName").value
+                sPreference.setStringValue(SPreference.userName,  snapshot.child("fullName").value.toString())
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     fun onButtonPressed(view: View) {
         if (view.id == R.id.btnLogout) {
             sPreference.setBooleanValue(SPreference.isLogin, false)
             sPreference.setStringValue(SPreference.userName, "")
-            sPreference.setStringValue(SPreference.password, "")
+            mAuth!!.signOut()
             Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, MainScreenActivity::class.java))
             finish()

@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.pizzaapp.yummypizzas.Adapter.OrderListAdapter
 import com.pizzaapp.yummypizzas.R
 import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
@@ -18,6 +20,11 @@ import kotlinx.android.synthetic.main.activity_employee_order_tracker.*
 
 class EmployeeOrderTrackerActivity : AppCompatActivity(), OrderListAdapter.OrderClickListener {
     private lateinit var sPreference: SPreference
+
+    private var mDatabaseReference: DatabaseReference? = null
+    private var mDatabase: FirebaseDatabase? = null
+    private var mAuth: FirebaseAuth? = null
+
     private lateinit var orderListAdapter: OrderListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,22 +35,31 @@ class EmployeeOrderTrackerActivity : AppCompatActivity(), OrderListAdapter.Order
 
     private fun initUI() {
         sPreference = SPreference(this)
-        tvEmployeeName.text = "Hello " + sPreference.getStringValue(SPreference.userName)
+        mDatabase = FirebaseDatabase.getInstance()
+        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+        mAuth = FirebaseAuth.getInstance()
+        val mUser = mAuth!!.currentUser
+        val mUserReference = mDatabaseReference!!.child(mUser!!.uid)
+        mUserReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                tvEmployeeName.text = "Hello " + snapshot.child("fullName").value
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
         val roomDatabase = PizzaDatabase.getDatabase(this)
         val allOrders = roomDatabase.orderDAO().getAllOrders() as ArrayList<Order>
         if (allOrders.isNotEmpty()) {
             orderListAdapter = OrderListAdapter(allOrders, this, this)
+            val linearLayout = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            rvOrderList.layoutManager = linearLayout
+            rvOrderList.adapter = orderListAdapter
         }
-        val linearLayout = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rvOrderList.layoutManager = linearLayout
-        rvOrderList.adapter = orderListAdapter
     }
 
     fun onButtonPressed(view: View) {
         if (view.id == R.id.btnLogout) {
             sPreference.setBooleanValue(SPreference.isLogin,false)
-            sPreference.setStringValue(SPreference.userName,"")
-            sPreference.setStringValue(SPreference.password,"")
+            mAuth!!.signOut()
             Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, MainScreenActivity::class.java))
             finish()

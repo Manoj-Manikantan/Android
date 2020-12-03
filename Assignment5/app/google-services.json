@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "302788559401",
+    "firebase_url": "https://yummypizzas-9c656.firebaseio.com",
+    "project_id": "yummypizzas-9c656",
+    "storage_bucket": "yummypizzas-9c656.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302788559401:android:1f7dbfac5761c2aada9238",
+        "android_client_info": {
+          "package_name": "com.pizzaapp.yummypizzas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302788559401-62ns6na2m3o2qaidps0lfokldjkr4iah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pizzaapp.yummypizzas",
+            "certificate_hash": "7be39536318ead750f77c7cc8795cdfd0f58a52f"
+          }
+        },
+        {
+          "client_id": "302788559401-6er5kjvrbe7dveqolmrpnv0cg4c2v3h0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQJEppA5473-Zj0UN5HLVIBOrsz2G_z3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302788559401-6er5kjvrbe7dveqolmrpnv0cg4c2v3h0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
