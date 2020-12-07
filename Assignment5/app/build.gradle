@@ -60,6 +60,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    // Calling an API
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+
     implementation 'com.android.support:multidex:1.0.3'
 
     // Lifecycle components

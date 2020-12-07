@@ -1,15 +1,13 @@
 package com.pizzaapp.yummypizzas.Activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
-import com.pizzaapp.yummypizzas.Adapter.OrderListAdapter
-import com.pizzaapp.yummypizzas.Entity.Order
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.core.OrderBy
 import com.pizzaapp.yummypizzas.R
 import kotlinx.android.synthetic.main.activity_customer_order_summary.*
-import kotlinx.android.synthetic.main.activity_employee_order_tracker.*
 
 class CustomerOrderSummaryActivity : AppCompatActivity() {
 
@@ -21,13 +19,18 @@ class CustomerOrderSummaryActivity : AppCompatActivity() {
 
     private fun initUI() {
         val myDb = FirebaseFirestore.getInstance()
-        myDb.collection("Orders").get()
+        val collection = myDb.collection("Orders").orderBy("dateTime")
+        collection.get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val document = task.result!!
                     if (document.documents.size>0){
                         val lastIndex = document.documents.size-1
-                        Log.e("OrderTracking", document.documents[lastIndex].id + " => " + document.documents[lastIndex].data)
+                        //val lastIndex = 0
+                        Log.e(
+                            "OrderTracking",
+                            document.documents[lastIndex].id + " => " + document.documents[lastIndex].data
+                        )
                         val latestOrder = document.documents[lastIndex].data
                         textViewOrderDate.text = "Order Date : " + latestOrder!!["dateTime"].toString()
                         textViewCustomerName.text = "Customer Name : " + latestOrder!!["customerName"].toString()
@@ -40,6 +43,4 @@ class CustomerOrderSummaryActivity : AppCompatActivity() {
                 }
             }
     }
-
-
 }

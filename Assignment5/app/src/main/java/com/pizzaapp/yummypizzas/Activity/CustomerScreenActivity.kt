@@ -2,6 +2,7 @@ package com.pizzaapp.yummypizzas.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.pizzaapp.yummypizzas.R
 import com.pizzaapp.yummypizzas.Utility.SPreference
 import kotlinx.android.synthetic.main.activity_customer_screen.*
+import okhttp3.*
+import org.json.JSONArray
+import java.io.IOException
 
 
 class CustomerScreenActivity : AppCompatActivity() {
@@ -44,7 +48,11 @@ class CustomerScreenActivity : AppCompatActivity() {
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+
+
     }
+
+
 
     fun onButtonPressed(view: View) {
         if (view.id == R.id.btnLogout) {
