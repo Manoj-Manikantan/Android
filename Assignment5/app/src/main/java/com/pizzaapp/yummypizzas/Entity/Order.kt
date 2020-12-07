@@ -1,11 +1,9 @@
-package com.pizzaapp.yummypizzas.Room.Entity
+package com.pizzaapp.yummypizzas.Entity
 
 import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "order_table")
 class Order(
+    @ColumnInfo(name = "orderId") var orderId: String,
     @ColumnInfo(name = "customerName") var customerName: String,
     @ColumnInfo(name = "pizzaName") var pizzaName: String,
     @ColumnInfo(name = "pizzaSize") var pizzaSize: String,
@@ -13,7 +11,4 @@ class Order(
     @ColumnInfo(name = "price") var price: Int,
     @ColumnInfo(name = "orderDate") var orderDate: String,
     @ColumnInfo(name = "status") var orderStatus: String
-) {
-    @PrimaryKey(autoGenerate = true)
-    var orderId: Int = 0
-}
+)

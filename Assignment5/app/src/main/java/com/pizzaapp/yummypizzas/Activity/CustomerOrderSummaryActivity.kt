@@ -1,13 +1,15 @@
 package com.pizzaapp.yummypizzas.Activity
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
+import com.pizzaapp.yummypizzas.Adapter.OrderListAdapter
+import com.pizzaapp.yummypizzas.Entity.Order
 import com.pizzaapp.yummypizzas.R
-import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
-import com.pizzaapp.yummypizzas.Room.Entity.Order
 import kotlinx.android.synthetic.main.activity_customer_order_summary.*
+import kotlinx.android.synthetic.main.activity_employee_order_tracker.*
 
 class CustomerOrderSummaryActivity : AppCompatActivity() {
 
@@ -18,15 +20,25 @@ class CustomerOrderSummaryActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        val roomDatabase = PizzaDatabase.getDatabase(this)
-        val lastOrder = roomDatabase.orderDAO().getLastOrder()
-        textViewOrderDate.text = "Order Date : " + lastOrder.orderDate
-        textViewCustomerName.text = "Customer Name : " + lastOrder.customerName
-        textViewPizzaName.text = "Pizza Name : " + lastOrder.pizzaName
-        textViewPizzaSizeQty.text =
-            "Size : " + lastOrder.pizzaSize + " , Quantity : " + lastOrder.quantity
-        textViewTotalPrice.text = "Total Price : $" + lastOrder.price
-        Log.e("Order Details", "getAllPizza: lastOrder.price: " + lastOrder.price)
+        val myDb = FirebaseFirestore.getInstance()
+        myDb.collection("Orders").get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result!!
+                    if (document.documents.size>0){
+                        val lastIndex = document.documents.size-1
+                        Log.e("OrderTracking", document.documents[lastIndex].id + " => " + document.documents[lastIndex].data)
+                        val latestOrder = document.documents[lastIndex].data
+                        textViewOrderDate.text = "Order Date : " + latestOrder!!["dateTime"].toString()
+                        textViewCustomerName.text = "Customer Name : " + latestOrder!!["customerName"].toString()
+                        textViewPizzaName.text = "Pizza Name : " + latestOrder!!["pizzaName"].toString()
+                        textViewPizzaSizeQty.text = "Size : " + latestOrder!!["pizzaSize"].toString() + " , Quantity : " + latestOrder!!["pizzaQuantity"].toString()
+                        textViewTotalPrice.text = "Total Price : $" + latestOrder!!["totalPrice"].toString()
+                    }
+                } else {
+                    Log.e("OrderTracking", "Error getting documents.", task.exception)
+                }
+            }
     }
 
 

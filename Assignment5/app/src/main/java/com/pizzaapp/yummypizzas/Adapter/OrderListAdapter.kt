@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pizzaapp.yummypizzas.R
-import com.pizzaapp.yummypizzas.Room.Entity.Order
+import com.pizzaapp.yummypizzas.Entity.Order
 import com.pizzaapp.yummypizzas.Utility.Constants
 import com.pizzaapp.yummypizzas.databinding.RowOrderItemBinding
 
@@ -39,8 +39,8 @@ class OrderListAdapter(
 
         @SuppressLint("ResourceAsColor", "NewApi")
         fun bindData(item: Order, position: Int) {
-            binding.tvOrderId.text = "Order Id:" + item.orderId
-            binding.tvCustomerName.text = "Customer Name:" + item.customerName
+            binding.tvOrderId.text = "Order Id: " + item.orderId
+            binding.tvCustomerName.text = "Customer Name: " + item.customerName
             binding.tvPizzaName.text = "Pizza: " + item.pizzaName
             binding.tvDate.text = "Date: " + item.orderDate
             binding.tvPizzaQuantity.text = "Quantity: " + item.quantity

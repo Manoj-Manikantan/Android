@@ -4,29 +4,34 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.pizzaapp.yummypizzas.R
-import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
-import com.pizzaapp.yummypizzas.Room.Entity.Order
+import com.pizzaapp.yummypizzas.Entity.Order
 import com.pizzaapp.yummypizzas.Utility.Constants
 import com.pizzaapp.yummypizzas.Utility.SPreference
 import kotlinx.android.synthetic.main.activity_customer_pizza_order.*
 import java.time.LocalDateTime
+
 
 class CustomerPizzaOrderActivity : AppCompatActivity() {
 
     var pizzaName: String = ""
     var pizzaSize: String = ""
     var pizzaQuantity: Int = 1
-    var totalPrize: Int = 0
+    var totalPrice: Int = 0
 
     private lateinit var sPreference: SPreference
 
@@ -70,7 +75,6 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
             }
         }
 
-
         etQuantity.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (s!!.isNotEmpty()) {
@@ -99,8 +103,8 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
                 "Medium" -> priceForOne = 15
                 "Small" -> priceForOne = 10
             }
-            totalPrize = priceForOne * pizzaQuantity
-            tvTotalAmount.text = "$ $totalPrize"
+            totalPrice = priceForOne * pizzaQuantity
+            tvTotalAmount.text = "$ $totalPrice"
         }
 
     }
@@ -132,17 +136,23 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
     //Open Checkout activity
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openCustomerInfoActivity() {
-        val newOrder = Order(
-            sPreference.getStringValue(SPreference.userName),
-            pizzaName,
-            pizzaSize,
-            pizzaQuantity,
-            totalPrize,
-            LocalDateTime.now().toString(),
-            Constants.inProgress
-        )
-        val t1 = addPizzaThread(newOrder, this)
-        t1.start()
+        val myDB = FirebaseFirestore.getInstance()
+        myDB.collection("Orders")
+            .add( mapOf(
+                "customerName" to sPreference.getStringValue(SPreference.userName),
+                "pizzaName" to pizzaName,
+                "pizzaSize" to pizzaSize,
+                "pizzaQuantity" to pizzaQuantity,
+                "totalPrice" to totalPrice,
+                "dateTime" to LocalDateTime.now().toString(),
+                "status" to Constants.inProgress
+            ))
+            .addOnSuccessListener(OnSuccessListener<DocumentReference> { documentReference ->
+                Log.e("CustomerOrder", "DocumentSnapshot added with ID: " + documentReference.id
+                )
+            })
+            .addOnFailureListener(OnFailureListener { e -> Log.e("CustomerOrder", "Error adding document", e) })
+
         val i = Intent(applicationContext, CustomerScreenActivity::class.java)
         Toast.makeText(
             applicationContext,
@@ -150,21 +160,5 @@ class CustomerPizzaOrderActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
         startActivity(i)
-    }
-}
-
-
-class addPizzaThread() : Thread() {
-    private lateinit var order: Order
-    private lateinit var context: Context
-
-    constructor(order: Order, context: Context) : this() {
-        this.order = order
-        this.context = context
-    }
-
-    override fun run() {
-        val roomDatabase = PizzaDatabase.getDatabase(context)
-        roomDatabase.orderDAO().insertOrder(order)
     }
 }

@@ -7,9 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.pizzaapp.yummypizzas.R
-import com.pizzaapp.yummypizzas.Room.Database.PizzaDatabase
-import com.pizzaapp.yummypizzas.Room.Entity.Order
 import com.pizzaapp.yummypizzas.Utility.SPreference
 import kotlinx.android.synthetic.main.activity_customer_screen.*
 
@@ -37,8 +36,12 @@ class CustomerScreenActivity : AppCompatActivity() {
         mUserReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 tvUserName.text = "Hello " + snapshot.child("fullName").value
-                sPreference.setStringValue(SPreference.userName,  snapshot.child("fullName").value.toString())
+                sPreference.setStringValue(
+                    SPreference.userName,
+                    snapshot.child("fullName").value.toString()
+                )
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
     }
@@ -65,20 +68,36 @@ class CustomerScreenActivity : AppCompatActivity() {
         } else if (view.id == R.id.btnPersonalInfo) {
             startActivity(Intent(this, CustomerInfoActivity::class.java))
         } else if (view.id == R.id.btnOrderDetails) {
-
             if (sPreference.getBooleanValue(SPreference.isPersonalInfoFilled)) {
-                val roomDatabase = PizzaDatabase.getDatabase(this)
-                val allOrders = roomDatabase.orderDAO().getAllOrders() as ArrayList<Order>
-                if (allOrders.isNotEmpty()) {
-                    startActivity(Intent(this, CustomerOrderSummaryActivity::class.java))
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Please place your order to view the status",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    startActivity(Intent(this, CustomerPizzaOrderActivity::class.java))
-                }
+                val myDb = FirebaseFirestore.getInstance()
+                myDb.collection("Orders").get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val document = task.result!!
+                            if (document.documents.size > 0) {
+                                startActivity(
+                                    Intent(
+                                        this,
+                                        CustomerOrderSummaryActivity::class.java
+                                    )
+                                )
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Please place your order to view the status",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                startActivity(Intent(this, CustomerPizzaOrderActivity::class.java))
+                            }
+                        } else {
+                            Toast.makeText(
+                                this,
+                                "Please place your order to view the status",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startActivity(Intent(this, CustomerPizzaOrderActivity::class.java))
+                        }
+                    }
             } else {
                 Toast.makeText(
                     this,
